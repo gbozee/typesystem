@@ -28,6 +28,7 @@ class Field:
         description: str = "",
         default: typing.Any = NO_DEFAULT,
         allow_null: bool = False,
+        onupdate: typing.Any = None
     ):
         assert isinstance(title, str)
         assert isinstance(description, str)
@@ -41,6 +42,8 @@ class Field:
         self.title = title
         self.description = description
         self.allow_null = allow_null
+        if onupdate is not None:
+            self.onupdate = onupdate
 
         # We need this global counter to determine what order fields have
         # been declared in when used with `Schema`.
@@ -64,6 +67,9 @@ class Field:
 
     def has_default(self) -> bool:
         return hasattr(self, "default")
+
+    def has_onupdate(self)-> bool:
+        return hasattr(self, 'onupdate')
 
     def get_default_value(self) -> typing.Any:
         default = getattr(self, "default", None)
